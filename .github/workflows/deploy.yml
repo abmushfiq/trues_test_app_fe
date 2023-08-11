@@ -131,5 +131,5 @@ jobs:
           REMOTE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
           CONTAINER_ID: "348b70df3708" # Update with your actual container ID
         run: |
-          rsync -rav --delete-after --quiet -e "ssh -i $REMOTE_KEY" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html
+          rsync -rav --delete-after --quiet -e "ssh -i $REMOTE_KEY" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html/
           ssh -i $REMOTE_KEY $REMOTE_USER@$REMOTE_HOST "docker restart $CONTAINER_ID"
