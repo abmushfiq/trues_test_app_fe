@@ -19,7 +19,7 @@
 # node block 
 FROM node:14-alpine as nodework
 WORKDIR /app
-COPY Package.json .
+COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
