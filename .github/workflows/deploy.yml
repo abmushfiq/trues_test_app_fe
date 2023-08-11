@@ -24,7 +24,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: abmushfiq/trues_test:${{ github.sha }}
+          tags: abmushfiq/trues_test1_fe:${{ github.sha }}
           
       - name: Deploy to EC2 instance
         uses: appleboy/ssh-action@master
@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            docker stop trues_test || true
-            docker rm trues_test || true
-            docker pull ${{ secrets.DOCKER_USERNAME }}/trues_test:${{ github.sha }}
-            docker run -d --name trues_test -p 80:80 ${{ secrets.DOCKER_USERNAME }}/trues_test:${{ github.sha }}
+            docker stop trues_test1_fe || true
+            docker rm trues_test1_fe || true
+            docker pull ${{ secrets.DOCKER_USERNAME }}/trues_test1_fe:${{ github.sha }}
+            docker run -d --name trues_test1_fe -p 80:80 ${{ secrets.DOCKER_USERNAME }}/trues_test:${{ github.sha }}
