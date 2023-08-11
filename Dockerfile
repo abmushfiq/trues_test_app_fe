@@ -1,17 +1,33 @@
-FROM node:14-alpine
+# FROM node:14-alpine
 
+# WORKDIR /app
+
+# COPY . .
+
+# RUN npm install && npm build
+
+# FROM nginx:alpine
+
+# WORKDIR /usr/share/nginx/html
+
+# RUN rm -rf ./*
+
+# COPY --from=builder /app/build .
+
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
+# node block 
+FROM node:14-alpine as nodework
 WORKDIR /app
-
+COPY Package.json .
+RUN npm install
 COPY . .
+RUN npm run build
 
-RUN npm install && npm build
+#ngnix block
 
-FROM nginx:alpine
-
+FROM nginx:1.23-alpine
 WORKDIR /usr/share/nginx/html
-
 RUN rm -rf ./*
-
-COPY --from=builder /app/build .
-
+COPY --from=nodework /app/build .
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
