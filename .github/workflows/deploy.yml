@@ -36,4 +36,4 @@ jobs:
             docker stop trues_test1_fe || true
             docker rm trues_test1_fe || true
             docker pull ${{ secrets.DOCKER_USERNAME }}/trues_test1_fe:${{ github.sha }}
-            docker run -d --name trues_test1_fe -p 80:80 ${{ secrets.DOCKER_USERNAME }}/trues_test:${{ github.sha }}
+            docker run -d --name trues_test1_fe -p 80:80 ${{ secrets.DOCKER_USERNAME }}/trues_test1_fe:${{ github.sha }}
