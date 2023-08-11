@@ -1,4 +1,104 @@
-name: Trues-App Docker CI/CD Pipeline
+# name: Trues-App Docker CI/CD Pipeline
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build-test-deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+
+#       - name: Build and Push Docker image
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: .
+#           push: true
+#           tags: abmushfiq/trues_test1_fe:${{ github.sha }}
+          
+#       - name: Deploy to EC2 instance
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.EC2_HOST }}
+#           username: ${{ secrets.EC2_USERNAME }}
+#           key: ${{ secrets.EC2_PRIVATE_KEY }}
+#           script: |
+#             docker stop trues_test1_fe || true
+#             docker rm trues_test1_fe || true
+#             docker pull ${{ secrets.DOCKER_USERNAME }}/trues_test1_fe:${{ github.sha }}
+#             docker run -d --name trues_test1_fe -p 80:80 ${{ secrets.DOCKER_USERNAME }}/trues_test1_fe:${{ github.sha }}
+
+
+
+
+
+
+
+
+# name: Build and Push Docker Image
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: 14
+
+#       - name: Install dependencies
+#         run: npm install
+
+#       - name: Build React app
+#         run: npm run build
+
+# name: Deploy to EC2
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Build and Deploy
+#         env:
+#           REMOTE_USER: ${{ secrets.EC2_USERNAME }}
+#           REMOTE_HOST: ${{ secrets.EC2_HOST }}
+#           REMOTE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+#         run: |
+#           ssh -i $REMOTE_KEY $REMOTE_USER@$REMOTE_HOST 'bash -s' << EOF
+#             docker cp ./build/. CONTAINER_ID:/usr/share/nginx/html/
+#             docker restart CONTAINER_ID
+#           EOF
+
+
+name: Deploy to EC2 Nginx
 
 on:
   push:
@@ -6,34 +106,30 @@ on:
       - main
 
 jobs:
-  build-test-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          node-version: 14
 
-      - name: Build and Push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: abmushfiq/trues_test1_fe:${{ github.sha }}
-          
-      - name: Deploy to EC2 instance
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script: |
-            docker stop trues_test1_fe || true
-            docker rm trues_test1_fe || true
-            docker pull ${{ secrets.DOCKER_USERNAME }}/trues_test1_fe:${{ github.sha }}
-            docker run -d --name trues_test1_fe -p 80:80 ${{ secrets.DOCKER_USERNAME }}/trues_test1_fe:${{ github.sha }}
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Deploy to EC2
+        env:
+          REMOTE_USER: ${{ secrets.EC2_USERNAME }}
+          REMOTE_HOST: ${{ secrets.EC2_HOST }}
+          REMOTE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+          CONTAINER_ID: "348b70df3708" # Update with your actual container ID
+        run: |
+          rsync -rav --delete-after --quiet -e "ssh -i $REMOTE_KEY" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html/
+          ssh -i $REMOTE_KEY $REMOTE_USER@$REMOTE_HOST "docker restart $CONTAINER_ID"
