@@ -193,10 +193,10 @@ jobs:
           ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
 
           # Copy the build folder to the remote server
-          rsync -rav --delete-after --quiet -e "ssh -i ssh_key.pem" ./build/ $REMOTE_USER@$REMOTE_KEY:/usr/share/nginx/html/
+          rsync -rav --delete-after --quiet -e "ssh -i ssh_key.pem" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html/
 
           # Restart the Docker container
-          ssh -i ssh_key.pem $REMOTE_USER@$REMOTE_KEY "docker restart $CONTAINER_ID"
+          ssh -i ssh_key.pem $REMOTE_USER@$REMOTE_HOST "docker restart $CONTAINER_ID"
 
           # Clean up the temporary private key file
           rm -f ssh_key.pem
