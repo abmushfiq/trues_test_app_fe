@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
 
-      <h1>Hi iam React pipeline test pr ammazing test</h1>
+      <h1>Hi iam React pipeline i tried working</h1>
 
     </div>
   );
