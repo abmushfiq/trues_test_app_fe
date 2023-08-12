@@ -26,7 +26,7 @@ RUN npm run build
 
 #ngnix block
 
-FROM nginx:1.23
+FROM nginx:1.25
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 COPY --from=nodework /app/build .
