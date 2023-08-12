@@ -197,7 +197,7 @@ jobs:
           # rsync -rav --delete-after --quiet -e "ssh -i ssh_key.pem" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html/
 
           # temp try
-          rsync -rav --delete-after --quiet -e "ssh -i ssh_key.pem" ./build/ $REMOTE_USER@$REMOTE_HOST:/remote-trues/
+          rsync -rav --delete-after --quiet -e "ssh -i ssh_key.pem" ./build/ $REMOTE_USER@$REMOTE_HOST:remote-trues/
           
 
           # Restart the Docker container
