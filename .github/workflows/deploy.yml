@@ -200,7 +200,7 @@ jobs:
           rsync -rav --delete-after --quiet -e "ssh -i ssh_key.pem" ./build/ $REMOTE_USER@$REMOTE_HOST:remote-trues/
           # ssh -i ssh_key.pem $REMOTE_USER@$REMOTE_HOST "docker exec -it $CONTAINER_ID bash -c 'rm -r /usr/share/nginx/html/*'"
           # ssh -i ssh_key.pem $REMOTE_USER@$REMOTE_HOST "docker cp remote-trues/. $CONTAINER_ID:/usr/share/nginx/html/"
-          ssh -i ssh_key.pem $REMOTE_USER@$REMOTE_HOST "docker exec -it $CONTAINER_ID bash -c 'rm -r /usr/share/nginx/html/*' && docker cp /path/to/remote-trues/. $CONTAINER_ID:/usr/share/nginx/html/"
+          ssh -i ssh_key.pem $REMOTE_USER@$REMOTE_HOST "docker exec -it $CONTAINER_ID sh -c 'rm -r /usr/share/nginx/html/*' && docker cp /path/to/remote-trues/. $CONTAINER_ID:/usr/share/nginx/html/"
 
           # Restart the Docker container
           ssh -i ssh_key.pem $REMOTE_USER@$REMOTE_HOST "docker restart $CONTAINER_ID"
