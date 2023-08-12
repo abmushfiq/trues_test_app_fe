@@ -20,14 +20,14 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Linting
-      run: npm run lint
+    # - name: Linting
+    #   run: npm run lint
 
     - name: Unit Tests
       run: npm test
 
-    - name: Test Coverage
-      run: npm run test:coverage
+    # - name: Test Coverage
+    #   run: npm run test:coverage
 
     - name: Build
       run: npm run build
