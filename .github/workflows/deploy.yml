@@ -182,15 +182,17 @@ jobs:
           REMOTE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
           CONTAINER_ID: "9d45e78f8679" # Update with your actual container ID
         run: |
+
+          # Create the ~/.ssh directory if it doesn't exist
+          mkdir -p ~/.ssh
+          cd ~/.ssh
+
           # Store the private key in a temporary file
           echo -n "$REMOTE_KEY" > ssh_key.pem
           chmod 700 ssh_key.pem
 
-          # Create the ~/.ssh directory if it doesn't exist
-          mkdir -p ~/.ssh
-
           # Add remote host's SSH fingerprint to known_hosts
-          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
+          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/
 
           # Copy the build folder to the remote server
           rsync -rav --delete-after --quiet -e "ssh -i ssh_key.pem" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html/
