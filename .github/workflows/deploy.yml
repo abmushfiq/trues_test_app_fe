@@ -184,7 +184,7 @@ jobs:
         run: |
           # Store the private key in a temporary file
           echo -n "$REMOTE_KEY" > ssh_key.pem
-          chmod 600 ssh_key.pem
+          chmod 400 ssh_key.pem
 
           # Create the ~/.ssh directory if it doesn't exist
           mkdir -p ~/.ssh
