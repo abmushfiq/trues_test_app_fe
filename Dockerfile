@@ -17,7 +17,7 @@
 # ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
 # node block 
-FROM node:14-alpine as nodework
+FROM node:14 as nodework
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -26,7 +26,7 @@ RUN npm run build
 
 #ngnix block
 
-FROM nginx:1.23-alpine
+FROM nginx:1.23
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 COPY --from=nodework /app/build .
