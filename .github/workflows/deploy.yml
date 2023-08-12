@@ -180,9 +180,9 @@ jobs:
           REMOTE_USER: ${{ secrets.EC2_USERNAME }}
           REMOTE_HOST: ${{ secrets.EC2_HOST }}
           REMOTE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-          CONTAINER_ID: "9d45e78f8679" # Update with your actual container ID
+          CONTAINER_ID: "57fd1cd4c755" # Update with your actual container ID
         run: |
-        
+
           # Store the private key in a temporary file
           echo -n "$REMOTE_KEY" > ssh_key.pem
           chmod 700 ssh_key.pem
