@@ -184,6 +184,9 @@ jobs:
           echo -n "$REMOTE_KEY" > ssh_key.pem
           chmod 600 ssh_key.pem
 
+          # Add remote host's SSH fingerprint to known_hosts
+          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
+
           # Copy the build folder to the remote server
           rsync -rav --delete-after --quiet -e "ssh -i ssh_key.pem" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html/
 
@@ -192,4 +195,5 @@ jobs:
 
           # Clean up the temporary private key file
           rm -f ssh_key.pem
+
 
