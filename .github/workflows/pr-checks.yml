@@ -20,24 +20,17 @@
 #     - name: Install dependencies
 #       run: npm install
 
-<<<<<<< HEAD
-    # - name: Linting
-    #   run: npm run lint
-=======
+
 #     - name: Linting
 #       run: npm run lint
->>>>>>> d746417 (test-directly)
 
 #     - name: Unit Tests
 #       run: npm test
 
-<<<<<<< HEAD
-    # - name: Test Coverage
-    #   run: npm run test:coverage
-=======
+
 #     - name: Test Coverage
 #       run: npm run test:coverage
->>>>>>> d746417 (test-directly)
+
 
 #     - name: Build
 #       run: npm run build
