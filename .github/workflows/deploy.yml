@@ -90,6 +90,63 @@
 #             docker restart CONTAINER_ID
 #           EOF
 
+# name: Deploy to EC2 Nginx
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: 14
+
+#       - name: Install dependencies
+#         run: npm install
+
+#       - name: Build React app
+#         run: npm run build
+
+#       # - name: Deploy to EC2
+#       #   env:
+#       #     REMOTE_USER: ${{ secrets.EC2_USERNAME }}
+#       #     REMOTE_HOST: ${{ secrets.EC2_HOST }}
+#       #     REMOTE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+#       #     CONTAINER_ID: "348b70df3708" # Update with your actual container ID
+#       #   run: |
+#       #     rsync -rav --delete-after --quiet -e "ssh -i $REMOTE_KEY" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html/
+#       #     ssh -i $REMOTE_KEY $REMOTE_USER@$REMOTE_HOST "docker restart $CONTAINER_ID"
+
+#       - name: Deploy to EC2
+#       env:
+#         REMOTE_USER: ${{ secrets.EC2_USERNAME }}
+#         REMOTE_HOST: ${{ secrets.EC2_HOST }}
+#         REMOTE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+#         CONTAINER_ID: "348b70df3708" # Update with your actual container ID
+#       run: |
+#           # Store the private key in a temporary file
+#           echo -n "$REMOTE_KEY" > ssh_key.pem
+#           chmod 600 ssh_key.pem
+
+#     # Copy the build folder to the remote server
+#           rsync -rav --delete-after --quiet -e "ssh -i ssh_key.pem" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html/
+
+#     # Restart the Docker container
+#           ssh -i ssh_key.pem $REMOTE_USER@$REMOTE_HOST "docker restart $CONTAINER_ID"
+
+#     # Clean up the temporary private key file
+#     rm -f ssh_key.pem
+
+
 name: Deploy to EC2 Nginx
 
 on:
@@ -116,32 +173,23 @@ jobs:
       - name: Build React app
         run: npm run build
 
-      # - name: Deploy to EC2
-      #   env:
-      #     REMOTE_USER: ${{ secrets.EC2_USERNAME }}
-      #     REMOTE_HOST: ${{ secrets.EC2_HOST }}
-      #     REMOTE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-      #     CONTAINER_ID: "348b70df3708" # Update with your actual container ID
-      #   run: |
-      #     rsync -rav --delete-after --quiet -e "ssh -i $REMOTE_KEY" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html/
-      #     ssh -i $REMOTE_KEY $REMOTE_USER@$REMOTE_HOST "docker restart $CONTAINER_ID"
-
       - name: Deploy to EC2
-      env:
-        REMOTE_USER: ${{ secrets.EC2_USERNAME }}
-        REMOTE_HOST: ${{ secrets.EC2_HOST }}
-        REMOTE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-        CONTAINER_ID: "348b70df3708" # Update with your actual container ID
-      run: |
+        env:
+          REMOTE_USER: ${{ secrets.EC2_USERNAME }}
+          REMOTE_HOST: ${{ secrets.EC2_HOST }}
+          REMOTE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+          CONTAINER_ID: "348b70df3708" # Update with your actual container ID
+        run: |
           # Store the private key in a temporary file
           echo -n "$REMOTE_KEY" > ssh_key.pem
           chmod 600 ssh_key.pem
 
-    # Copy the build folder to the remote server
+          # Copy the build folder to the remote server
           rsync -rav --delete-after --quiet -e "ssh -i ssh_key.pem" ./build/ $REMOTE_USER@$REMOTE_HOST:/usr/share/nginx/html/
 
-    # Restart the Docker container
+          # Restart the Docker container
           ssh -i ssh_key.pem $REMOTE_USER@$REMOTE_HOST "docker restart $CONTAINER_ID"
 
-    # Clean up the temporary private key file
-    rm -f ssh_key.pem
+          # Clean up the temporary private key file
+          rm -f ssh_key.pem
+
