@@ -1,36 +1,36 @@
-# name: Pull Request Checks
-# on:
-#   pull_request:
-#     types:
-#       - opened
+name: Pull Request Checks
+on:
+  pull_request:
+    types:
+      - opened
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-#     steps:
-#     - name: Check out code
-#       uses: actions/checkout@v2
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
 
-#     - name: Set up Node.js
-#       uses: actions/setup-node@v2
-#       with:
-#         node-version: 14
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
 
-#     - name: Install dependencies
-#       run: npm install
-
-
-#     - name: Linting
-#       run: npm run lint
-
-#     - name: Unit Tests
-#       run: npm test
+    - name: Install dependencies
+      run: npm install
 
 
-#     - name: Test Coverage
-#       run: npm run test:coverage
+    - name: Linting
+      run: npm run lint
+
+    - name: Unit Tests
+      run: npm test
 
 
-#     - name: Build
-#       run: npm run build
+    - name: Test Coverage
+      run: npm run test:coverage
+
+
+    - name: Build
+      run: npm run build
